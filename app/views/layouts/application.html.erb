@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Name</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>Psych Report</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+</head>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
+<body>
+  <nav>
+    <%= link_to 'Home', root_path %> |
+    <% if user_signed_in? %>
+      <%= link_to 'Profile', edit_user_registration_path %> |
+      <%= link_to 'Sign Out', destroy_user_session_path, method: :delete %>
+    <% else %>
+      <%= link_to 'Sign In', new_user_session_path %> |
+      <%= link_to 'Sign Up', new_user_registration_path %>
+    <% end %>
+  </nav>
 
-  <body>
-    <%= yield %>
-  </body>
+  <%= yield %> <!-- This is where the content of each page will be rendered -->
+</body>
 </html>

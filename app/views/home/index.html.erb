@@ -1,0 +1,8 @@
+<% if user_signed_in? %>
+  <h1>Welcome, <%= current_user.email %></h1>
+  <%= link_to 'Edit Profile', edit_user_registration_path %>
+  <%= link_to 'Sign Out', destroy_user_session_path, method: :delete %>
+<% else %>
+  <h1>Welcome to the WISC Report Writer</h1>
+  <p>Please <%= link_to 'sign in', new_user_session_path %> or <%= link_to 'sign up', new_user_registration_path %>.</p>
+<% end %>
