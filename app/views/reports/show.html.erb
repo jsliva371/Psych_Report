@@ -1,0 +1,11 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @report %>
+
+<div>
+  <%= link_to "Edit this report", edit_user_report_path(current_user, @report) %> |
+  <%= link_to "Back to reports", user_reports_path(current_user) %>
+
+  <%= button_to "Destroy this report", user_report_path(current_user, @report), method: :delete, data: { confirm: "Are you sure?" } %>
+
+</div>

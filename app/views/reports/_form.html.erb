@@ -1,0 +1,124 @@
+<%= form_with(model: report, url: report.persisted? ? user_report_path(current_user, report) : user_reports_path(current_user), local: true) do |form| %>
+  <h3>Enter Test Scores</h3>
+
+  <div class="field">
+    <%= form.label :similarities_scaled_score, "Similarities Scaled Score" %>
+    <%= form.number_field :similarities_scaled_score, id: 'similarities_scaled_score' %>
+    <%= form.label :similarities_percentile_score, "Similarities Percentile Rank" %>
+    <%= form.number_field :similarities_percentile_score, id: 'similarities_percentile_score' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :vocabulary_scaled_score, "Vocabulary Scaled Score" %>
+    <%= form.number_field :vocabulary_scaled_score, id: 'vocabulary_scaled_score' %>
+    <%= form.label :vocabulary_percentile_score, "Vocabulary Percentile Rank" %>
+    <%= form.number_field :vocabulary_percentile_score, id: 'vocabulary_percentile_score' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :block_design_scaled_score, "Block Design Scaled Score" %>
+    <%= form.number_field :block_design_scaled_score, id: 'block_design_scaled_score' %>
+    <%= form.label :block_design_percentile_score, "Block Design Percentile Rank" %>
+    <%= form.number_field :block_design_percentile_score, id: 'block_design_percentile_score' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :visual_puzzles_scaled_score, "Visual Puzzles Scaled Score" %>
+    <%= form.number_field :visual_puzzles_scaled_score, id: 'visual_puzzles_scaled_score' %>
+    <%= form.label :visual_puzzles_percentile_score, "Visual Puzzles Percentile Rank" %>
+    <%= form.number_field :visual_puzzles_percentile_score, id: 'visual_puzzles_percentile_score' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :matrix_reasoning_scaled_score, "Matrix Reasoning Scaled Score" %>
+    <%= form.number_field :matrix_reasoning_scaled_score, id: 'matrix_reasoning_scaled_score' %>
+    <%= form.label :matrix_reasoning_percentile_score, "Matrix Reasoning Percentile Rank" %>
+    <%= form.number_field :matrix_reasoning_percentile_score, id: 'matrix_reasoning_percentile_score' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :figure_weights_scaled_score, "Figure Weights Scaled Score" %>
+    <%= form.number_field :figure_weights_scaled_score, id: 'figure_weights_scaled_score' %>
+    <%= form.label :figure_weights_percentile_score, "Figure Weights Percentile Rank" %>
+    <%= form.number_field :figure_weights_percentile_score, id: 'figure_weights_percentile_score' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :digit_span_scaled_score, "Digit Span Scaled Score" %>
+    <%= form.number_field :digit_span_scaled_score, id: 'digit_span_scaled_score' %>
+    <%= form.label :digit_span_percentile_score, "Digit Span Percentile Rank" %>
+    <%= form.number_field :digit_span_percentile_score, id: 'digit_span_percentile_score' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :picture_span_scaled_score, "Picture Span Scaled Score" %>
+    <%= form.number_field :picture_span_scaled_score, id: 'picture_span_scaled_score' %>
+    <%= form.label :picture_span_percentile_score, "Picture Span Percentile Rank" %>
+    <%= form.number_field :picture_span_percentile_score, id: 'picture_span_percentile_score' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :coding_scaled_score, "Coding Scaled Score" %>
+    <%= form.number_field :coding_scaled_score, id: 'coding_scaled_score' %>
+    <%= form.label :coding_percentile_score, "Coding Percentile Rank" %>
+    <%= form.number_field :coding_percentile_score, id: 'coding_percentile_score' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :symbol_search_scaled_score, "Symbol Search Scaled Score" %>
+    <%= form.number_field :symbol_search_scaled_score, id: 'symbol_search_scaled_score' %>
+    <%= form.label :symbol_search_percentile_score, "Symbol Search Percentile Rank" %>
+    <%= form.number_field :symbol_search_percentile_score, id: 'symbol_search_percentile_score' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :analysis, "Analysis" %>
+    <%= form.text_area :analysis, id: 'analysis', rows: 10, cols: 50 %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Save Report" %>
+    <button type="button" id="generate-analysis-btn" class="btn btn-secondary">Generate Analysis</button>
+  </div>
+<% end %>
+
+<script>
+document.getElementById('generate-analysis-btn').addEventListener('click', function() {
+  // Collect all the test scores and organize them with both scaled and percentile values
+  let scores = {
+    similarities: { scaled: document.getElementById('similarities_scaled_score').value, percentile: document.getElementById('similarities_percentile_score').value },
+    vocabulary: { scaled: document.getElementById('vocabulary_scaled_score').value, percentile: document.getElementById('vocabulary_percentile_score').value },
+    block_design: { scaled: document.getElementById('block_design_scaled_score').value, percentile: document.getElementById('block_design_percentile_score').value },
+    visual_puzzles: { scaled: document.getElementById('visual_puzzles_scaled_score').value, percentile: document.getElementById('visual_puzzles_percentile_score').value },
+    matrix_reasoning: { scaled: document.getElementById('matrix_reasoning_scaled_score').value, percentile: document.getElementById('matrix_reasoning_percentile_score').value },
+    figure_weights: { scaled: document.getElementById('figure_weights_scaled_score').value, percentile: document.getElementById('figure_weights_percentile_score').value },
+    digit_span: { scaled: document.getElementById('digit_span_scaled_score').value, percentile: document.getElementById('digit_span_percentile_score').value },
+    picture_span: { scaled: document.getElementById('picture_span_scaled_score').value, percentile: document.getElementById('picture_span_percentile_score').value },
+    coding: { scaled: document.getElementById('coding_scaled_score').value, percentile: document.getElementById('coding_percentile_score').value },
+    symbol_search: { scaled: document.getElementById('symbol_search_scaled_score').value, percentile: document.getElementById('symbol_search_percentile_score').value }
+  };
+
+  // Get CSRF token from the meta tag
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+  // Send the scores to the backend
+  fetch('<%= generate_analysis_user_reports_path(current_user) %>', {
+    method: 'POST',
+    body: JSON.stringify({ scores: scores }),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken, // Added comma here
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.analysis) {
+      // Update the generated analysis field with the result
+      document.getElementById('analysis').value = data.analysis;
+    } else {
+      alert('Error generating analysis');
+    }
+  })
+  .catch(error => console.error('Error:', error));
+});
+</script>

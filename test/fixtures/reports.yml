@@ -1,0 +1,49 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  similarities_scaled_score: 1
+  similarities_percentile_score: 1
+  vocabulary_scaled_score: 1
+  vocabulary_percentile_score: 1
+  block_design_scaled_score: 1
+  block_design_percentile_score: 1
+  visual_puzzles_scaled_score: 1
+  visual_puzzles_percentile_score: 1
+  matrix_reasoning_scaled_score: 1
+  matrix_reasoning_percentile_score: 1
+  figure_weights_scaled_score: 1
+  figure_weights_percentile_score: 1
+  digit_span_scaled_score: 1
+  digit_span_percentile_score: 1
+  picture_span_scaled_score: 1
+  picture_span_percentile_score: 1
+  coding_scaled_score: 1
+  coding_percentile_score: 1
+  symbol_search_scaled_score: 1
+  symbol_search_percentile_score: 1
+  analysis: MyText
+
+two:
+  user: two
+  similarities_scaled_score: 1
+  similarities_percentile_score: 1
+  vocabulary_scaled_score: 1
+  vocabulary_percentile_score: 1
+  block_design_scaled_score: 1
+  block_design_percentile_score: 1
+  visual_puzzles_scaled_score: 1
+  visual_puzzles_percentile_score: 1
+  matrix_reasoning_scaled_score: 1
+  matrix_reasoning_percentile_score: 1
+  figure_weights_scaled_score: 1
+  figure_weights_percentile_score: 1
+  digit_span_scaled_score: 1
+  digit_span_percentile_score: 1
+  picture_span_scaled_score: 1
+  picture_span_percentile_score: 1
+  coding_scaled_score: 1
+  coding_percentile_score: 1
+  symbol_search_scaled_score: 1
+  symbol_search_percentile_score: 1
+  analysis: MyText

@@ -10,7 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_16_234226) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_17_001601) do
+  create_table "reports", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "similarities_scaled_score"
+    t.integer "similarities_percentile_score"
+    t.integer "vocabulary_scaled_score"
+    t.integer "vocabulary_percentile_score"
+    t.integer "block_design_scaled_score"
+    t.integer "block_design_percentile_score"
+    t.integer "visual_puzzles_scaled_score"
+    t.integer "visual_puzzles_percentile_score"
+    t.integer "matrix_reasoning_scaled_score"
+    t.integer "matrix_reasoning_percentile_score"
+    t.integer "figure_weights_scaled_score"
+    t.integer "figure_weights_percentile_score"
+    t.integer "digit_span_scaled_score"
+    t.integer "digit_span_percentile_score"
+    t.integer "picture_span_scaled_score"
+    t.integer "picture_span_percentile_score"
+    t.integer "coding_scaled_score"
+    t.integer "coding_percentile_score"
+    t.integer "symbol_search_scaled_score"
+    t.integer "symbol_search_percentile_score"
+    t.text "analysis"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_reports_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -23,4 +51,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_16_234226) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "reports", "users"
 end
