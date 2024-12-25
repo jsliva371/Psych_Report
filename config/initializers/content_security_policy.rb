@@ -23,3 +23,8 @@
 #   # Report violations without enforcing the policy.
 #   # config.content_security_policy_report_only = true
 # end
+Rails.application.config.content_security_policy do |policy|
+    policy.connect_src :self, 'https://cdn.jsdelivr.net', 'https://stackpath.bootstrapcdn.com'
+    policy.script_src :self, :unsafe_inline, :unsafe_eval, 'https://cdn.jsdelivr.net', 'https://stackpath.bootstrapcdn.com'
+    policy.style_src :self, :unsafe_inline, 'https://cdn.jsdelivr.net', 'https://stackpath.bootstrapcdn.com'
+  end

@@ -29,6 +29,16 @@ gem "jbuilder"
 gem 'devise'
 
 gem 'http'
+
+gem 'dotenv-rails', groups: [:development, :test]
+
+gem 'bootstrap'
+
+gem 'sassc-rails'
+
+gem 'docx'
+
+gem 'pdf-reader'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
@@ -70,10 +80,3 @@ group :test do
 
 end
 
-gem 'dotenv-rails', groups: [:development, :test]
-
-gem 'bootstrap'
-
-gem 'sassc-rails'
-
-gem 'pdf-reader'
