@@ -1,6 +1,23 @@
-<%= form_with(model: report, url: report.persisted? ? user_report_path(current_user, report) : user_reports_path(current_user), local: true) do |form| %>
+<%= form_with(model: report, url: report.persisted? ? user_report_path(current_user, report) : user_reports_path(current_user), local: true, html: { multipart: true }) do |form| %>
+
+  <!-- PDF Upload Section -->
+  <h3>Upload WISC Test PDF</h3>
+  <div class="field">
+    <%= form.label :pdf_file, "Upload PDF File" %>
+    <%= form.file_field :pdf_file, id: "pdf-file-input", accept: ".pdf" %> 
+  </div>
+
+  <!-- Extract Scores Button -->
+  <div class="actions">
+    <button type="button" id="extract-scores-btn" class="btn btn-secondary">Extract Scores</button>
+  </div>
+
+  <%= form.hidden_field :user_id, value: current_user.id, id: 'user-id' %>
+
+  <!-- Manual Input Section  -->
   <h3>Enter Test Scores</h3>
 
+  <%# Similarities %>
   <div class="field">
     <%= form.label :similarities_scaled_score, "Similarities Scaled Score" %>
     <%= form.number_field :similarities_scaled_score, id: 'similarities_scaled_score' %>
@@ -8,13 +25,14 @@
     <%= form.number_field :similarities_percentile_score, id: 'similarities_percentile_score' %>
   </div>
 
+  <%# Vocabulary %>
   <div class="field">
     <%= form.label :vocabulary_scaled_score, "Vocabulary Scaled Score" %>
     <%= form.number_field :vocabulary_scaled_score, id: 'vocabulary_scaled_score' %>
     <%= form.label :vocabulary_percentile_score, "Vocabulary Percentile Rank" %>
     <%= form.number_field :vocabulary_percentile_score, id: 'vocabulary_percentile_score' %>
   </div>
-
+  
   <div class="field">
     <%= form.label :block_design_scaled_score, "Block Design Scaled Score" %>
     <%= form.number_field :block_design_scaled_score, id: 'block_design_scaled_score' %>
@@ -84,7 +102,6 @@
 
 <script>
 document.getElementById('generate-analysis-btn').addEventListener('click', function() {
-  // Collect all the test scores and organize them with both scaled and percentile values
   let scores = {
     similarities: { scaled: document.getElementById('similarities_scaled_score').value, percentile: document.getElementById('similarities_percentile_score').value },
     vocabulary: { scaled: document.getElementById('vocabulary_scaled_score').value, percentile: document.getElementById('vocabulary_percentile_score').value },
@@ -98,27 +115,73 @@ document.getElementById('generate-analysis-btn').addEventListener('click', funct
     symbol_search: { scaled: document.getElementById('symbol_search_scaled_score').value, percentile: document.getElementById('symbol_search_percentile_score').value }
   };
 
-  // Get CSRF token from the meta tag
   const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-  // Send the scores to the backend
   fetch('<%= generate_analysis_user_reports_path(current_user) %>', {
     method: 'POST',
     body: JSON.stringify({ scores: scores }),
     headers: {
       'Content-Type': 'application/json',
-      'X-CSRF-Token': csrfToken, // Added comma here
+      'X-CSRF-Token': csrfToken,
     }
   })
   .then(response => response.json())
   .then(data => {
-    if (data.analysis) {
-      // Update the generated analysis field with the result
-      document.getElementById('analysis').value = data.analysis;
-    } else {
-      alert('Error generating analysis');
+    document.getElementById('analysis').value = data.analysis;
+  })
+  .catch(error => console.error('Error generating analysis:', error));
+});
+
+document.getElementById('extract-scores-btn').addEventListener('click', function() {
+  const fileInput = document.getElementById('pdf-file-input');
+  
+  if (fileInput.files.length === 0) {
+    alert('Please upload a PDF file first!');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('pdf_file', fileInput.files[0]);
+
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+  const userId = document.getElementById('user-id').value;
+  
+  fetch(`/users/${userId}/reports/extract_scores`, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-CSRF-Token': csrfToken
     }
   })
-  .catch(error => console.error('Error:', error));
+  .then(response => response.json())
+  .then(data => {
+    // Assuming `data.scores` contains the extracted scores
+    const scores = data.scores;
+
+    // Populate the form fields with the extracted scores
+    document.getElementById('similarities_scaled_score').value = scores.similarities.scaled;
+    document.getElementById('similarities_percentile_score').value = scores.similarities.percentile;
+    document.getElementById('vocabulary_scaled_score').value = scores.vocabulary.scaled;
+    document.getElementById('vocabulary_percentile_score').value = scores.vocabulary.percentile;
+    document.getElementById('block_design_scaled_score').value = scores.block_design.scaled;
+    document.getElementById('block_design_percentile_score').value = scores.block_design.percentile;
+    document.getElementById('visual_puzzles_scaled_score').value = scores.visual_puzzles.scaled;
+    document.getElementById('visual_puzzles_percentile_score').value = scores.visual_puzzles.percentile;
+    document.getElementById('matrix_reasoning_scaled_score').value = scores.matrix_reasoning.scaled;
+    document.getElementById('matrix_reasoning_percentile_score').value = scores.matrix_reasoning.percentile;
+    document.getElementById('figure_weights_scaled_score').value = scores.figure_weights.scaled;
+    document.getElementById('figure_weights_percentile_score').value = scores.figure_weights.percentile;
+    document.getElementById('digit_span_scaled_score').value = scores.digit_span.scaled;
+    document.getElementById('digit_span_percentile_score').value = scores.digit_span.percentile;
+    document.getElementById('picture_span_scaled_score').value = scores.picture_span.scaled;
+    document.getElementById('picture_span_percentile_score').value = scores.picture_span.percentile;
+    document.getElementById('coding_scaled_score').value = scores.coding.scaled;
+    document.getElementById('coding_percentile_score').value = scores.coding.percentile;
+    document.getElementById('symbol_search_scaled_score').value = scores.symbol_search.scaled;
+    document.getElementById('symbol_search_percentile_score').value = scores.symbol_search.percentile;
+  })
+  .catch(error => {
+    console.error('Error extracting scores:', error);
+  });
 });
 </script>

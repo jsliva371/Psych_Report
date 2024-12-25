@@ -75,3 +75,5 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem 'bootstrap'
 
 gem 'sassc-rails'
+
+gem 'pdf-reader'
