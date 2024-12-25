@@ -7,7 +7,6 @@
     </div>
     <div class="card-body">
 
-
       <!-- Scores Table -->
       <table class="table table-bordered table-striped table-hover">
         <thead class="thead-dark">
@@ -71,9 +70,72 @@
         </tbody>
       </table>
 
+      <!-- VCI Section -->
+      <div class="mb-3">
+        <h5>VCI (Verbal Comprehension Index)</h5>
+        <p><strong>Standard Score:</strong> <%= report.vci_standard %></p>
+        <p><strong>Percentile Score:</strong> <%= report.vci_percentile %></p>
+        <p><strong>Analysis:</strong> <%= report.vci_analysis %></p>
+      </div>
+
+      <!-- VSI Section -->
+      <div class="mb-3">
+        <h5>VSI (Visual Spatial Index)</h5>
+        <p><strong>Standard Score:</strong> <%= report.vsi_standard %></p>
+        <p><strong>Percentile Score:</strong> <%= report.vsi_percentile %></p>
+        <p><strong>Analysis:</strong> <%= report.vsi_analysis %></p>
+      </div>
+
+      <!-- FRI Section -->
+      <div class="mb-3">
+        <h5>FRI (Fluid Reasoning Index)</h5>
+        <p><strong>Standard Score:</strong> <%= report.fri_standard %></p>
+        <p><strong>Percentile Score:</strong> <%= report.fri_percentile %></p>
+        <p><strong>Analysis:</strong> <%= report.fri_analysis %></p>
+      </div>
+
+      <!-- WMI Section -->
+      <div class="mb-3">
+        <h5>WMI (Working Memory Index)</h5>
+        <p><strong>Standard Score:</strong> <%= report.wmi_standard %></p>
+        <p><strong>Percentile Score:</strong> <%= report.wmi_percentile %></p>
+        <p><strong>Analysis:</strong> <%= report.wmi_analysis %></p>
+      </div>
+
+      <!-- PSI Section -->
+      <div class="mb-3">
+        <h5>PSI (Processing Speed Index)</h5>
+        <p><strong>Standard Score:</strong> <%= report.psi_standard %></p>
+        <p><strong>Percentile Score:</strong> <%= report.psi_percentile %></p>
+        <p><strong>Analysis:</strong> <%= report.psi_analysis %></p>
+      </div>
+
+      <!-- FSIQ Section -->
+      <div class="mb-3">
+        <h5>FSIQ (Full Scale IQ)</h5>
+        <p><strong>Standard Score:</strong> <%= report.fsiq_standard %></p>
+        <p><strong>Percentile Score:</strong> <%= report.fsiq_percentile %></p>
+        <p><strong>Analysis:</strong> <%= report.fsiq_analysis %></p>
+      </div>
+
+      <!-- Individual Test Analysis -->
+      <div class="mb-3">
+        <h5>Test Analysis</h5>
+        <p><strong>Similarities:</strong> <%= report.similarities_analysis %></p>
+        <p><strong>Vocabulary:</strong> <%= report.vocabulary_analysis %></p>
+        <p><strong>Block Design:</strong> <%= report.block_design_analysis %></p>
+        <p><strong>Visual Puzzles:</strong> <%= report.visual_puzzles_analysis %></p>
+        <p><strong>Matrix Reasoning:</strong> <%= report.matrix_reasoning_analysis %></p>
+        <p><strong>Figure Weights:</strong> <%= report.figure_weights_analysis %></p>
+        <p><strong>Digit Span:</strong> <%= report.digit_span_analysis %></p>
+        <p><strong>Picture Span:</strong> <%= report.picture_span_analysis %></p>
+        <p><strong>Symbol Search:</strong> <%= report.symbol_search_analysis %></p>
+        <p><strong>Coding:</strong> <%= report.coding_analysis %></p>
+      </div>
+
       <!-- Analysis Section -->
       <div class="mb-3">
-        <p><strong>Analysis:</strong></p>
+        <p><strong>Overall Analysis:</strong></p>
         <p class="text-muted"><%= report.analysis %></p>
       </div>
 

@@ -22,12 +22,74 @@
   <!-- Manual Input Section  -->
   <h3>Enter Test Scores</h3>
 
+  <!-- VCI Scores -->
+  <div class="field">
+    <%= form.label :vci_standard, "VCI Standard Score" %>
+    <%= form.number_field :vci_standard, id: 'vci_standard' %>
+    <%= form.label :vci_percentile, "VCI Percentile Rank" %>
+    <%= form.number_field :vci_percentile, id: 'vci_percentile' %>
+    <%= form.label :vci_analysis, "VCI Analysis" %>
+    <%= form.text_area :vci_analysis, id: 'vci_analysis', rows: 4 %>
+  </div>
+
+  <!-- VSI Scores -->
+  <div class="field">
+    <%= form.label :vsi_standard, "VSI Standard Score" %>
+    <%= form.number_field :vsi_standard, id: 'vsi_standard' %>
+    <%= form.label :vsi_percentile, "VSI Percentile Rank" %>
+    <%= form.number_field :vsi_percentile, id: 'vsi_percentile' %>
+    <%= form.label :vsi_analysis, "VSI Analysis" %>
+    <%= form.text_area :vsi_analysis, id: 'vsi_analysis', rows: 4 %>
+  </div>
+
+  <!-- FRI Scores -->
+  <div class="field">
+    <%= form.label :fri_standard, "FRI Standard Score" %>
+    <%= form.number_field :fri_standard, id: 'fri_standard' %>
+    <%= form.label :fri_percentile, "FRI Percentile Rank" %>
+    <%= form.number_field :fri_percentile, id: 'fri_percentile' %>
+    <%= form.label :fri_analysis, "FRI Analysis" %>
+    <%= form.text_area :fri_analysis, id: 'fri_analysis', rows: 4 %>
+  </div>
+
+  <!-- WMI Scores -->
+  <div class="field">
+    <%= form.label :wmi_standard, "WMI Standard Score" %>
+    <%= form.number_field :wmi_standard, id: 'wmi_standard' %>
+    <%= form.label :wmi_percentile, "WMI Percentile Rank" %>
+    <%= form.number_field :wmi_percentile, id: 'wmi_percentile' %>
+    <%= form.label :wmi_analysis, "WMI Analysis" %>
+    <%= form.text_area :wmi_analysis, id: 'wmi_analysis', rows: 4 %>
+  </div>
+
+  <!-- PSI Scores -->
+  <div class="field">
+    <%= form.label :psi_standard, "PSI Standard Score" %>
+    <%= form.number_field :psi_standard, id: 'psi_standard' %>
+    <%= form.label :psi_percentile, "PSI Percentile Rank" %>
+    <%= form.number_field :psi_percentile, id: 'psi_percentile' %>
+    <%= form.label :psi_analysis, "PSI Analysis" %>
+    <%= form.text_area :psi_analysis, id: 'psi_analysis', rows: 4 %>
+  </div>
+
+  <!-- FSIQ Scores -->
+  <div class="field">
+    <%= form.label :fsiq_standard, "FSIQ Standard Score" %>
+    <%= form.number_field :fsiq_standard, id: 'fsiq_standard' %>
+    <%= form.label :fsiq_percentile, "FSIQ Percentile Rank" %>
+    <%= form.number_field :fsiq_percentile, id: 'fsiq_percentile' %>
+    <%= form.label :fsiq_analysis, "FSIQ Analysis" %>
+    <%= form.text_area :fsiq_analysis, id: 'fsiq_analysis', rows: 4 %>
+  </div>
+
   <%# Similarities %>
   <div class="field">
     <%= form.label :similarities_scaled_score, "Similarities Scaled Score" %>
     <%= form.number_field :similarities_scaled_score, id: 'similarities_scaled_score' %>
     <%= form.label :similarities_percentile_score, "Similarities Percentile Rank" %>
     <%= form.number_field :similarities_percentile_score, id: 'similarities_percentile_score' %>
+    <%= form.label :similarties_analysis, "Similarities Analysis" %>
+    <%= form.text_area :similarties_analysis, id: 'similarties_analysis', rows: 4 %>
   </div>
 
   <%# Vocabulary %>
@@ -36,6 +98,8 @@
     <%= form.number_field :vocabulary_scaled_score, id: 'vocabulary_scaled_score' %>
     <%= form.label :vocabulary_percentile_score, "Vocabulary Percentile Rank" %>
     <%= form.number_field :vocabulary_percentile_score, id: 'vocabulary_percentile_score' %>
+    <%= form.label :vocabulary_analysis, "Vocabulary Analysis" %>
+    <%= form.text_area :vocabulary_analysis, id: 'vocabulary_analysis', rows: 4 %>
   </div>
   
   <div class="field">
@@ -43,6 +107,8 @@
     <%= form.number_field :block_design_scaled_score, id: 'block_design_scaled_score' %>
     <%= form.label :block_design_percentile_score, "Block Design Percentile Rank" %>
     <%= form.number_field :block_design_percentile_score, id: 'block_design_percentile_score' %>
+    <%= form.label :block_design_analysis, "Block Design Analysis" %>
+    <%= form.text_area :block_design_analysis, id: 'block_design_analysis', rows: 4 %>
   </div>
 
   <div class="field">
@@ -50,6 +116,8 @@
     <%= form.number_field :visual_puzzles_scaled_score, id: 'visual_puzzles_scaled_score' %>
     <%= form.label :visual_puzzles_percentile_score, "Visual Puzzles Percentile Rank" %>
     <%= form.number_field :visual_puzzles_percentile_score, id: 'visual_puzzles_percentile_score' %>
+    <%= form.label :visual_puzzles_analysis, "Visual Puzzles Analysis" %>
+    <%= form.text_area :visual_puzzles_analysis, id: 'visual_puzzles_analysis', rows: 4 %>
   </div>
 
   <div class="field">
@@ -57,6 +125,8 @@
     <%= form.number_field :matrix_reasoning_scaled_score, id: 'matrix_reasoning_scaled_score' %>
     <%= form.label :matrix_reasoning_percentile_score, "Matrix Reasoning Percentile Rank" %>
     <%= form.number_field :matrix_reasoning_percentile_score, id: 'matrix_reasoning_percentile_score' %>
+    <%= form.label :matrix_reasoning_analysis, "Matrix Reasoning Analysis" %>
+    <%= form.text_area :matrix_reasoning_analysis, id: 'matrix_reasoning_analysis', rows: 4 %>
   </div>
 
   <div class="field">
@@ -64,6 +134,8 @@
     <%= form.number_field :figure_weights_scaled_score, id: 'figure_weights_scaled_score' %>
     <%= form.label :figure_weights_percentile_score, "Figure Weights Percentile Rank" %>
     <%= form.number_field :figure_weights_percentile_score, id: 'figure_weights_percentile_score' %>
+    <%= form.label :figure_weights_analysis, "Figure Weights Analysis" %>
+    <%= form.text_area :figure_weights_analysis, id: 'figure_weights_analysis', rows: 4 %>
   </div>
 
   <div class="field">
@@ -71,6 +143,8 @@
     <%= form.number_field :digit_span_scaled_score, id: 'digit_span_scaled_score' %>
     <%= form.label :digit_span_percentile_score, "Digit Span Percentile Rank" %>
     <%= form.number_field :digit_span_percentile_score, id: 'digit_span_percentile_score' %>
+    <%= form.label :digit_span_analysis, "Digit Span Analysis" %>
+    <%= form.text_area :digit_span_analysis, id: 'digit_span_analysis', rows: 4 %>
   </div>
 
   <div class="field">
@@ -78,13 +152,8 @@
     <%= form.number_field :picture_span_scaled_score, id: 'picture_span_scaled_score' %>
     <%= form.label :picture_span_percentile_score, "Picture Span Percentile Rank" %>
     <%= form.number_field :picture_span_percentile_score, id: 'picture_span_percentile_score' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :coding_scaled_score, "Coding Scaled Score" %>
-    <%= form.number_field :coding_scaled_score, id: 'coding_scaled_score' %>
-    <%= form.label :coding_percentile_score, "Coding Percentile Rank" %>
-    <%= form.number_field :coding_percentile_score, id: 'coding_percentile_score' %>
+    <%= form.label :picture_span_analysis, "Picture Span Analysis" %>
+    <%= form.text_area :picture_span_analysis, id: 'picture_span_analysis', rows: 4 %>
   </div>
 
   <div class="field">
@@ -92,7 +161,19 @@
     <%= form.number_field :symbol_search_scaled_score, id: 'symbol_search_scaled_score' %>
     <%= form.label :symbol_search_percentile_score, "Symbol Search Percentile Rank" %>
     <%= form.number_field :symbol_search_percentile_score, id: 'symbol_search_percentile_score' %>
+    <%= form.label :symbol_search_analysis, "Symbol Search Analysis" %>
+    <%= form.text_area :symbol_search_analysis, id: 'symbol_search_analysis', rows: 4 %>
   </div>
+
+  <div class="field">
+    <%= form.label :coding_scaled_score, "Coding Scaled Score" %>
+    <%= form.number_field :coding_scaled_score, id: 'coding_scaled_score' %>
+    <%= form.label :coding_percentile_score, "Coding Percentile Rank" %>
+    <%= form.number_field :coding_percentile_score, id: 'coding_percentile_score' %>
+    <%= form.label :coding_analysis, "Coding Analysis" %>
+    <%= form.text_area :coding_analysis, id: 'coding_analysis', rows: 4 %>
+  </div>
+
 
   <div class="field">
     <%= form.label :analysis, "Analysis" %>
@@ -160,33 +241,63 @@ document.getElementById('extract-scores-btn').addEventListener('click', function
   })
   .then(response => response.json())
   .then(data => {
-    // Assuming `data.scores` contains the extracted scores
+    // Check if the scores object exists and is populated
     const scores = data.scores;
+    if (!scores) {
+      alert('No scores were extracted from the file.');
+      return;
+    }
 
     // Populate the form fields with the extracted scores
-    document.getElementById('similarities_scaled_score').value = scores.similarities.scaled;
-    document.getElementById('similarities_percentile_score').value = scores.similarities.percentile;
-    document.getElementById('vocabulary_scaled_score').value = scores.vocabulary.scaled;
-    document.getElementById('vocabulary_percentile_score').value = scores.vocabulary.percentile;
-    document.getElementById('block_design_scaled_score').value = scores.block_design.scaled;
-    document.getElementById('block_design_percentile_score').value = scores.block_design.percentile;
-    document.getElementById('visual_puzzles_scaled_score').value = scores.visual_puzzles.scaled;
-    document.getElementById('visual_puzzles_percentile_score').value = scores.visual_puzzles.percentile;
-    document.getElementById('matrix_reasoning_scaled_score').value = scores.matrix_reasoning.scaled;
-    document.getElementById('matrix_reasoning_percentile_score').value = scores.matrix_reasoning.percentile;
-    document.getElementById('figure_weights_scaled_score').value = scores.figure_weights.scaled;
-    document.getElementById('figure_weights_percentile_score').value = scores.figure_weights.percentile;
-    document.getElementById('digit_span_scaled_score').value = scores.digit_span.scaled;
-    document.getElementById('digit_span_percentile_score').value = scores.digit_span.percentile;
-    document.getElementById('picture_span_scaled_score').value = scores.picture_span.scaled;
-    document.getElementById('picture_span_percentile_score').value = scores.picture_span.percentile;
-    document.getElementById('coding_scaled_score').value = scores.coding.scaled;
-    document.getElementById('coding_percentile_score').value = scores.coding.percentile;
-    document.getElementById('symbol_search_scaled_score').value = scores.symbol_search.scaled;
-    document.getElementById('symbol_search_percentile_score').value = scores.symbol_search.percentile;
+    // For each field, ensure the value exists before attempting to set it
+    const fields = [
+      { id: 'similarities_scaled_score', score: scores.similarities?.scaled },
+      { id: 'similarities_percentile_score', score: scores.similarities?.percentile },
+      { id: 'vocabulary_scaled_score', score: scores.vocabulary?.scaled },
+      { id: 'vocabulary_percentile_score', score: scores.vocabulary?.percentile },
+      { id: 'block_design_scaled_score', score: scores.block_design?.scaled },
+      { id: 'block_design_percentile_score', score: scores.block_design?.percentile },
+      { id: 'visual_puzzles_scaled_score', score: scores.visual_puzzles?.scaled },
+      { id: 'visual_puzzles_percentile_score', score: scores.visual_puzzles?.percentile },
+      { id: 'matrix_reasoning_scaled_score', score: scores.matrix_reasoning?.scaled },
+      { id: 'matrix_reasoning_percentile_score', score: scores.matrix_reasoning?.percentile },
+      { id: 'figure_weights_scaled_score', score: scores.figure_weights?.scaled },
+      { id: 'figure_weights_percentile_score', score: scores.figure_weights?.percentile },
+      { id: 'digit_span_scaled_score', score: scores.digit_span?.scaled },
+      { id: 'digit_span_percentile_score', score: scores.digit_span?.percentile },
+      { id: 'picture_span_scaled_score', score: scores.picture_span?.scaled },
+      { id: 'picture_span_percentile_score', score: scores.picture_span?.percentile },
+      { id: 'coding_scaled_score', score: scores.coding?.scaled },
+      { id: 'coding_percentile_score', score: scores.coding?.percentile },
+      { id: 'symbol_search_scaled_score', score: scores.symbol_search?.scaled },
+      { id: 'symbol_search_percentile_score', score: scores.symbol_search?.percentile },
+      { id: 'vci_standard', score: scores.vci?.composite_score },
+      { id: 'vci_percentile', score: scores.vci?.percentile },
+      { id: 'vsi_standard', score: scores.vsi?.composite_score },
+      { id: 'vsi_percentile', score: scores.vsi?.percentile },
+      { id: 'fri_standard', score: scores.fri?.composite_score },
+      { id: 'fri_percentile', score: scores.fri?.percentile },
+      { id: 'wmi_standard', score: scores.wmi?.composite_score },
+      { id: 'wmi_percentile', score: scores.wmi?.percentile },
+      { id: 'psi_standard', score: scores.psi?.composite_score },
+      { id: 'psi_percentile', score: scores.psi?.percentile },
+      { id: 'fsiq_standard', score: scores.fsiq?.composite_score },
+      { id: 'fsiq_percentile', score: scores.fsiq?.percentile }
+    ];
+
+    // Iterate over the fields array and set the values
+    fields.forEach(field => {
+      const element = document.getElementById(field.id);
+      if (element && field.score !== undefined && field.score !== null) {
+        element.value = field.score;
+      } else if (element) {
+        element.value = '';  // Clear the value if score is missing
+      }
+    });
   })
   .catch(error => {
     console.error('Error extracting scores:', error);
+    alert('An error occurred while extracting the scores.');
   });
 });
 </script>

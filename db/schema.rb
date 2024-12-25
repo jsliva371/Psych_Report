@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_25_013945) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_25_044911) do
   create_table "reports", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "similarities_scaled_score"
@@ -37,6 +37,34 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_25_013945) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.integer "vci_standard"
+    t.integer "vci_percentile"
+    t.text "vci_analysis"
+    t.integer "vsi_standard"
+    t.integer "vsi_percentile"
+    t.text "vsi_analysis"
+    t.integer "fri_standard"
+    t.integer "fri_percentile"
+    t.text "fri_analysis"
+    t.integer "wmi_standard"
+    t.integer "wmi_percentile"
+    t.text "wmi_analysis"
+    t.integer "psi_standard"
+    t.integer "psi_percentile"
+    t.text "psi_analysis"
+    t.integer "fsiq_standard"
+    t.integer "fsiq_percentile"
+    t.text "fsiq_analysis"
+    t.text "similarties_analysis"
+    t.text "vocabulary_analysis"
+    t.text "block_design_analysis"
+    t.text "visual_puzzles_analysis"
+    t.text "matrix_reasoning_analysis"
+    t.text "figure_weights_analysis"
+    t.text "digit_span_analysis"
+    t.text "picture_span_analysis"
+    t.text "symbol_search_analysis"
+    t.text "coding_analysis"
     t.index ["user_id"], name: "index_reports_on_user_id"
   end
 
