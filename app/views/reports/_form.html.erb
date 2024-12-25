@@ -1,5 +1,10 @@
 <%= form_with(model: report, url: report.persisted? ? user_report_path(current_user, report) : user_reports_path(current_user), local: true, html: { multipart: true }) do |form| %>
 
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
   <!-- PDF Upload Section -->
   <h3>Upload WISC Test PDF</h3>
   <div class="field">

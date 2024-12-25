@@ -184,7 +184,7 @@ class ReportsController < ApplicationController
   end
 
   def report_params
-    params.require(:report).permit(
+    params.require(:report).permit( :name,
       :similarities_scaled_score, :similarities_percentile_score,
       :vocabulary_scaled_score, :vocabulary_percentile_score,
       :block_design_scaled_score, :block_design_percentile_score,

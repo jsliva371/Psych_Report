@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_17_001601) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_25_013945) do
   create_table "reports", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "similarities_scaled_score"
@@ -36,6 +36,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_17_001601) do
     t.text "analysis"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["user_id"], name: "index_reports_on_user_id"
   end
 
