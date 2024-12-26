@@ -88,8 +88,8 @@
     <%= form.number_field :similarities_scaled_score, id: 'similarities_scaled_score' %>
     <%= form.label :similarities_percentile_score, "Similarities Percentile Rank" %>
     <%= form.number_field :similarities_percentile_score, id: 'similarities_percentile_score' %>
-    <%= form.label :similarties_analysis, "Similarities Analysis" %>
-    <%= form.text_area :similarties_analysis, id: 'similarties_analysis', rows: 4 %>
+    <%= form.label :similarities_analysis, "Similarities Analysis" %>
+    <%= form.text_area :similarities_analysis, id: 'similarities_analysis', rows: 4 %>
   </div>
 
   <%# Vocabulary %>
@@ -180,6 +180,12 @@
     <%= form.text_area :analysis, id: 'analysis', rows: 10, cols: 50 %>
   </div>
 
+  <select id="analysis-mode">
+    <option value="summary">Summary</option>
+    <option value="individual">Individual</option>
+  </select>
+
+
   <div class="actions">
     <%= form.submit "Save Report" %>
     <button type="button" id="generate-analysis-btn" class="btn btn-secondary">Generate Analysis</button>
@@ -187,36 +193,141 @@
 <% end %>
 
 <script>
-document.getElementById('generate-analysis-btn').addEventListener('click', function() {
-  let scores = {
-    similarities: { scaled: document.getElementById('similarities_scaled_score').value, percentile: document.getElementById('similarities_percentile_score').value },
-    vocabulary: { scaled: document.getElementById('vocabulary_scaled_score').value, percentile: document.getElementById('vocabulary_percentile_score').value },
-    block_design: { scaled: document.getElementById('block_design_scaled_score').value, percentile: document.getElementById('block_design_percentile_score').value },
-    visual_puzzles: { scaled: document.getElementById('visual_puzzles_scaled_score').value, percentile: document.getElementById('visual_puzzles_percentile_score').value },
-    matrix_reasoning: { scaled: document.getElementById('matrix_reasoning_scaled_score').value, percentile: document.getElementById('matrix_reasoning_percentile_score').value },
-    figure_weights: { scaled: document.getElementById('figure_weights_scaled_score').value, percentile: document.getElementById('figure_weights_percentile_score').value },
-    digit_span: { scaled: document.getElementById('digit_span_scaled_score').value, percentile: document.getElementById('digit_span_percentile_score').value },
-    picture_span: { scaled: document.getElementById('picture_span_scaled_score').value, percentile: document.getElementById('picture_span_percentile_score').value },
-    coding: { scaled: document.getElementById('coding_scaled_score').value, percentile: document.getElementById('coding_percentile_score').value },
-    symbol_search: { scaled: document.getElementById('symbol_search_scaled_score').value, percentile: document.getElementById('symbol_search_percentile_score').value }
-  };
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('generate-analysis-btn').addEventListener('click', function () {
+    // Collect subtest scores
+    let scores = {
+      similarities: {
+        scaled: document.getElementById('similarities_scaled_score').value,
+        percentile: document.getElementById('similarities_percentile_score').value
+      },
+      vocabulary: {
+        scaled: document.getElementById('vocabulary_scaled_score').value,
+        percentile: document.getElementById('vocabulary_percentile_score').value
+      },
+      block_design: {
+        scaled: document.getElementById('block_design_scaled_score').value,
+        percentile: document.getElementById('block_design_percentile_score').value
+      },
+      visual_puzzles: {
+        scaled: document.getElementById('visual_puzzles_scaled_score').value,
+        percentile: document.getElementById('visual_puzzles_percentile_score').value
+      },
+      matrix_reasoning: {
+        scaled: document.getElementById('matrix_reasoning_scaled_score').value,
+        percentile: document.getElementById('matrix_reasoning_percentile_score').value
+      },
+      figure_weights: {
+        scaled: document.getElementById('figure_weights_scaled_score').value,
+        percentile: document.getElementById('figure_weights_percentile_score').value
+      },
+      digit_span: {
+        scaled: document.getElementById('digit_span_scaled_score').value,
+        percentile: document.getElementById('digit_span_percentile_score').value
+      },
+      picture_span: {
+        scaled: document.getElementById('picture_span_scaled_score').value,
+        percentile: document.getElementById('picture_span_percentile_score').value
+      },
+      coding: {
+        scaled: document.getElementById('coding_scaled_score').value,
+        percentile: document.getElementById('coding_percentile_score').value
+      },
+      symbol_search: {
+        scaled: document.getElementById('symbol_search_scaled_score').value,
+        percentile: document.getElementById('symbol_search_percentile_score').value
+      },
+      // Composite scores
+      vci: {
+        standard: document.getElementById('vci_standard').value,
+        percentile: document.getElementById('vci_percentile').value
+      },
+      vsi: {
+        standard: document.getElementById('vsi_standard').value,
+        percentile: document.getElementById('vsi_percentile').value
+      },
+      fri: {
+        standard: document.getElementById('fri_standard').value,
+        percentile: document.getElementById('fri_percentile').value
+      },
+      wmi: {
+        standard: document.getElementById('wmi_standard').value,
+        percentile: document.getElementById('wmi_percentile').value
+      },
+      psi: {
+        standard: document.getElementById('psi_standard').value,
+        percentile: document.getElementById('psi_percentile').value
+      },
+      fsiq: {
+        standard: document.getElementById('fsiq_standard').value,
+        percentile: document.getElementById('fsiq_percentile').value
+      }
+    };
 
-  const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    // Determine mode (summary or individual)
+    const mode = document.getElementById('analysis-mode').value;
 
-  fetch('<%= generate_analysis_user_reports_path(current_user) %>', {
-    method: 'POST',
-    body: JSON.stringify({ scores: scores }),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRF-Token': csrfToken,
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById('analysis').value = data.analysis;
-  })
-  .catch(error => console.error('Error generating analysis:', error));
+    // CSRF Token for Rails
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    // API Call
+    fetch('<%= generate_analysis_user_reports_path(current_user) %>', {
+      method: 'POST',
+      body: JSON.stringify({ scores: scores, mode: mode }),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Log response for debugging
+        console.log('API Response:', data);
+
+        if (mode === 'summary') {
+          // Populate the summary analysis field
+          document.getElementById('analysis').value = data.analysis || 'No summary available.';
+        } else if (mode === 'individual') {
+          // Define a mapping between response keys and form fields
+          const fieldMapping = {
+            vci_analysis: 'vci_analysis',
+            vsi_analysis: 'vsi_analysis',
+            fri_analysis: 'fri_analysis',
+            wmi_analysis: 'wmi_analysis',
+            psi_analysis: 'psi_analysis',
+            fsiq_analysis: 'fsiq_analysis',
+            similarities_analysis: 'similarities_analysis',
+            vocabulary_analysis: 'vocabulary_analysis',
+            block_design_analysis: 'block_design_analysis',
+            visual_puzzles_analysis: 'visual_puzzles_analysis',
+            matrix_reasoning_analysis: 'matrix_reasoning_analysis',
+            figure_weights_analysis: 'figure_weights_analysis',
+            digit_span_analysis: 'digit_span_analysis',
+            picture_span_analysis: 'picture_span_analysis',
+            coding_analysis: 'coding_analysis',
+            symbol_search_analysis: 'symbol_search_analysis',
+          };
+
+          // Ensure to access the nested analysis object
+          const analysisData = data.analysis;
+
+          // Populate individual fields dynamically
+          Object.keys(fieldMapping).forEach(key => {
+            const fieldId = fieldMapping[key];
+            const value = analysisData[key];
+            if (value !== undefined) {
+              document.getElementById(fieldId).value = value;
+            }
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error generating analysis:', error);
+        alert('An error occurred while generating the analysis. Please try again later.');
+      });
+  });
 });
+
 
 document.getElementById('extract-scores-btn').addEventListener('click', function() {
   const fileInput = document.getElementById('pdf-file-input');

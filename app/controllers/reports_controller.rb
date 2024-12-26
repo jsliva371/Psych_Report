@@ -93,8 +93,9 @@ class ReportsController < ApplicationController
   end
 
   def generate_analysis
-    # Permit the nested 'scores' parameter with subtests containing 'scaled' and 'percentile'
+    # Permit scores for subtests and composite scores
     subtest_scores = params.require(:scores).permit(
+      # Subtests
       similarities: [:scaled, :percentile],
       vocabulary: [:scaled, :percentile],
       block_design: [:scaled, :percentile],
@@ -104,30 +105,62 @@ class ReportsController < ApplicationController
       digit_span: [:scaled, :percentile],
       picture_span: [:scaled, :percentile],
       coding: [:scaled, :percentile],
-      symbol_search: [:scaled, :percentile]
+      symbol_search: [:scaled, :percentile],
+  
+      # Composite scores
+      vci: [:standard, :percentile],
+      vsi: [:standard, :percentile],
+      fri: [:standard, :percentile],
+      wmi: [:standard, :percentile],
+      psi: [:standard, :percentile],
+      fsiq: [:standard, :percentile]
     ).to_h # Convert to plain Ruby hash
   
-    # Log scores to verify that they are being sent correctly
+    # Log scores for debugging
     Rails.logger.debug "Received scores: #{subtest_scores.inspect}"
   
-    # Ensure subtest_scores is present
+    # Ensure scores are present
     if subtest_scores.blank?
       render json: { error: 'Scores cannot be empty' }, status: :unprocessable_entity
       return
     end
   
-    # Call GeminiService to generate analysis
+    # Determine mode (summary or individual)
+    mode = params[:mode] == 'individual' ? :individual : :summary
+  
+    # Generate analysis based on mode
     gemini_service = GeminiService.new
-    analysis_result = gemini_service.generate_analysis(subtest_scores)
+    analysis_result = gemini_service.generate_analysis(subtest_scores, mode: mode)
   
-    # Log the result for debugging purposes
-    Rails.logger.debug "Generated analysis: #{analysis_result}"
+    # Strip formatting from Gemini response (handles code blocks)
+    begin
+      if analysis_result.is_a?(String)
+        # Extract JSON inside triple backticks if present
+        json_match = analysis_result.match(/{.*}/m) # Regex to extract JSON
+        analysis_result = JSON.parse(json_match[0]) if json_match
+      end
+    rescue JSON::ParserError => e
+      Rails.logger.error "JSON Parsing Error: #{e.message}"
+      render json: { error: 'Invalid JSON format in analysis response' }, status: :unprocessable_entity
+      return
+    end
   
-    # Return the analysis in the response
-    if analysis_result.present?
-      render json: { analysis: analysis_result }
+    # Handle summary mode
+    if mode == :summary
+      if analysis_result.present?
+        render json: { analysis: analysis_result }
+      else
+        render json: { error: 'Analysis generation failed' }, status: :unprocessable_entity
+      end
     else
-      render json: { error: 'Analysis generation failed' }, status: :unprocessable_entity
+      # Handle individual mode, but without requiring a report ID
+      if analysis_result.is_a?(Hash) && analysis_result.present?
+        # Generate the analysis independently without needing a report ID
+        # Store the generated analysis temporarily in memory or return it in the response
+        render json: { message: 'Individual analyses generated successfully!', analysis: analysis_result }
+      else
+        render json: { error: 'Failed to generate individual analyses' }, status: :unprocessable_entity
+      end
     end
   rescue StandardError => e
     Rails.logger.error "Generate analysis error: #{e.message}"
@@ -184,7 +217,14 @@ class ReportsController < ApplicationController
   end
 
   def report_params
-    params.require(:report).permit( :name,
+    params.require(:report).permit(
+      :name, 
+      :similarities_analysis, :vocabulary_analysis, :block_design_analysis, 
+      :visual_puzzles_analysis, :matrix_reasoning_analysis, :figure_weights_analysis, 
+      :digit_span_analysis, :picture_span_analysis, :coding_analysis, :symbol_search_analysis,
+      :vci_analysis, :vsi_analysis, :fri_analysis, :wmi_analysis, 
+      :psi_analysis, :fsiq_analysis, :analysis,
+      
       :similarities_scaled_score, :similarities_percentile_score,
       :vocabulary_scaled_score, :vocabulary_percentile_score,
       :block_design_scaled_score, :block_design_percentile_score,
@@ -195,7 +235,13 @@ class ReportsController < ApplicationController
       :picture_span_scaled_score, :picture_span_percentile_score,
       :coding_scaled_score, :coding_percentile_score,
       :symbol_search_scaled_score, :symbol_search_percentile_score,
-      :analysis
+      
+      :vci_standard, :vci_percentile,
+      :vsi_standard, :vsi_percentile,
+      :fri_standard, :fri_percentile,
+      :wmi_standard, :wmi_percentile,
+      :psi_standard, :psi_percentile,
+      :fsiq_standard, :fsiq_percentile
     )
-  end
+  end  
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_25_044911) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_25_222327) do
   create_table "reports", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "similarities_scaled_score"
@@ -55,7 +55,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_25_044911) do
     t.integer "fsiq_standard"
     t.integer "fsiq_percentile"
     t.text "fsiq_analysis"
-    t.text "similarties_analysis"
+    t.text "similarities_analysis"
     t.text "vocabulary_analysis"
     t.text "block_design_analysis"
     t.text "visual_puzzles_analysis"
