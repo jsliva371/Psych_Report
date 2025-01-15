@@ -5,23 +5,30 @@ class GeminiService
     @api_key = ENV['GEMINI_API_KEY']
   end
 
-  # Handles single or multi-analysis modes
+  # Handles analysis generation
   def generate_analysis(subtest_scores, mode: :summary)
+
+    if mode == :individual
+      subtest_scores.each do |test_name, test_data|
+        test_data[:percentile] = test_data[:percentile].to_i
+      end
+    end
+
     prompt = build_prompt(subtest_scores, mode)
 
-    # API Request
-    response = HTTP.post("#{BASE_URL}?key=#{@api_key}", json: {
-      contents: [{ parts: [{ text: prompt }] }]
-    })
+    # API Request for Summary Mode
+    if mode == :summary
+      response = HTTP.post("#{BASE_URL}?key=#{@api_key}", json: {
+        contents: [{ parts: [{ text: prompt }] }]
+      })
 
-    # Parse Response
-    parsed_response = JSON.parse(response.body.to_s)
-    text = parsed_response.dig('candidates', 0, 'content', 'parts', 0, 'text')
+      parsed_response = JSON.parse(response.body.to_s)
+      text = parsed_response.dig('candidates', 0, 'content', 'parts', 0, 'text')
+      return text.strip
+    end
 
-    # Force valid JSON parsing
-    text = text.strip.gsub(/```json|```/, '') # Remove formatting if present
-
-    mode == :summary ? text : parse_individual_analyses(text)
+    # Generate individual analysis using predefined descriptions for each percentile
+    generate_individual_analysis(subtest_scores)
   rescue StandardError => e
     Rails.logger.error "Gemini API Error: #{e.message}"
     mode == :summary ? "Error generating summary analysis." : {}
@@ -29,52 +36,51 @@ class GeminiService
 
   private
 
-  # Build Prompt
+  # Build Prompt for Summary Analysis
   def build_prompt(subtest_scores, mode)
     case mode
     when :summary
       <<~PROMPT
-        You are an expert psychologist tasked with analyzing WISC (Wechsler Intelligence Scale for Children) test results.
-        Based on the following scaled and percentile scores for each subtest, provide a detailed analysis:
+      You are an expert psychologist tasked with analyzing WISC (Wechsler Intelligence Scale for Children) test results.
 
-        #{format_scores(subtest_scores)}
+      ## Core Principles of analysis 
 
-        Write a professional, yet parent-friendly paragraph summarizing the child's overall performance, areas of strength, and areas of weakness in a concise manner. Replace any percentiles with descriptive terms.
-      PROMPT
-    when :individual
-      <<~PROMPT
-        You are an expert psychologist analyzing WISC (Wechsler Intelligence Scale for Children) test results.
-        Based on the following scores, provide **one-sentence descriptions** of each subtest and composite score performance. Highlight whether it is **below average, average, or above average** and mention areas of **strength or weakness**.
+      1. EXPLORATION OVER CONCLUSION
+      - Never rush to conclusions
+      - Keep exploring until a solution emerges naturally from the evidence
+      - Question every assumption and inference
 
-        #{format_scores(subtest_scores)}
+      2. DEPTH OF REASONING
+      - Engage in extensive contemplation (minimum 10,000 characters)
+      - Express thoughts in natural, conversational internal monologue 
+      - Break down complex thoughts into simple, atomic steps
+      - Embrace uncertainity and revision of previous thoughts
 
-        Provide responses in **valid JSON format** with keys matching the test names, and values as the analysis sentences.
+      3. THINKING PROCESS
+      - Use short, simple sentences that mirror natural thought patterns
+      - Express uncertainty and internal debate freely
+      - Show work-in-progress thinking
+      - Acknowledge and explore dead ends
+      - Frequently backtrack and revise
 
-        Important Notes:
-        - Return **only** the JSON object as output.  
-        - Do **not** include Markdown formatting, code blocks, or explanations.  
-        - Do **not** include comments in the JSON.  
-        - Ensure the output is **valid JSON** and can be parsed directly.  
+      4. PERSISTENCE
+      - Value thorough exploration over quick resolution
 
-        Example Output:
-        {
-          "similarities_analysis": "Short analysis here",
-          "vocabulary_analysis": "Short analysis here",
-          "block_design_analysis": "Short analysis here",
-          "visual_puzzles_analysis": "Short analysis here",
-          "matrix_reasoning_analysis": "Short analysis here",
-          "figure_weights_analysis": "Short analysis here",
-          "digit_span_analysis": "Short analysis here",
-          "picture_span_analysis": "Short analysis here",
-          "coding_analysis": "Short analysis here",
-          "symbol_search_analysis": "Short analysis here",
-          "vci_analysis": "Short analysis here",
-          "vsi_analysis": "Short analysis here",
-          "fri_analysis": "Short analysis here",
-          "wmi_analysis": "Short analysis here",
-          "psi_analysis": "Short analysis here",
-          "fsiq_analysis": "Short analysis here"
-        }
+      ## Based on the following scaled and percentile scores for each subtest, provide a detailed analysis:
+
+      #{format_scores(subtest_scores)}
+
+      Write a professional, yet parent-friendly paragraph summarizing the child's overall performance, areas of strength, and areas of weakness in a concise manner. Replace any percentiles with descriptive terms.
+
+      Using the provided WISC test results, the summary should:
+
+      - Provide an overall cognitive profile, including the Full-Scale IQ (FSIQ) score and its interpretation (e.g., average, above average, etc.).
+      - Describe performance in each index (e.g., Verbal Comprehension, Visual Spatial, Fluid Reasoning, Working Memory, Processing Speed):
+      - Report the index score and interpretation (e.g., average, high average).
+      - Summarize subtest scores within each index, highlighting strengths and weaknesses.
+      - Highlight notable strengths and areas for support, explaining their practical implications (e.g., strong verbal reasoning aids in communication, while slower processing speed may affect timed tasks).
+      - Offer general recommendations for leveraging strengths and addressing challenges.
+      - Use clear, professional language and ensure the summary is organized, precise, and free of jargon.
       PROMPT
     end
   end
@@ -86,14 +92,65 @@ class GeminiService
     end.join("\n")
   end
 
-  # Parse Individual Analyses (JSON)
-  def parse_individual_analyses(response_text)
-    begin
-      # Attempt to parse response as valid JSON
-      JSON.parse(response_text)
-    rescue JSON::ParserError => e
-      Rails.logger.error "JSON Parsing Error: #{e.message} | Response: #{response_text}"
-      {}
+  # Generate Individual Analysis Using Predefined Sentences
+  def generate_individual_analysis(subtest_scores)
+    analysis = {}
+    
+    field_mapping = {
+      "similarities" => "similarities_analysis",
+      "vocabulary" => "vocabulary_analysis",
+      "block_design" => "block_design_analysis",
+      "visual_puzzles" => "visual_puzzles_analysis",
+      "matrix_reasoning" => "matrix_reasoning_analysis",
+      "figure_weights" => "figure_weights_analysis",
+      "digit_span" => "digit_span_analysis",
+      "picture_span" => "picture_span_analysis",
+      "coding" => "coding_analysis",
+      "symbol_search" => "symbol_search_analysis",
+      "vci" => "vci_analysis",
+      "vsi" => "vsi_analysis",
+      "fri" => "fri_analysis",
+      "wmi" => "wmi_analysis",
+      "psi" => "psi_analysis",
+      "fsiq" => "fsiq_analysis"
+    }
+
+    
+    subtest_scores.each do |test, scores|
+      # Find the corresponding field name in the mapping
+      field_name = field_mapping[test]
+      
+      if field_name
+        category = categorize_score(scores[:percentile])
+        analysis[field_name] = "#{category[:label]} ability in #{test}, indicating #{category[:description]}"
+      else
+        Rails.logger.warn "No field mapping found for #{test}"
+      end
+    end
+
+    analysis
+  end
+
+
+  # Categorize Score Based on Percentile
+  def categorize_score(percentile)
+    case percentile
+    when 0..1
+      { label: 'Exceptionally Low', description: 'severe challenges or very low ability in this area' }
+    when 2..8
+      { label: 'Below Average', description: 'below typical performance for this age group' }
+    when 9..24
+      { label: 'Low Average', description: 'some challenges but still within a lower average range' }
+    when 25..74
+      { label: 'Average', description: 'typical performance for this age group' }
+    when 75..90
+      { label: 'High Average', description: 'above typical performance but not at the highest level' }
+    when 91..95
+      { label: 'Above Average', description: 'strong abilities in this area, above most peers' }
+    when 96..100
+      { label: 'Exceptionally High', description: 'outstanding ability in this area, far above peers' }
+    else
+      { label: 'Unknown', description: 'unable to categorize score' }
     end
   end
 end

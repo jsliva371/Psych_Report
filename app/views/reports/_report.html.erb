@@ -7,131 +7,127 @@
     </div>
     <div class="card-body">
 
-      <!-- Scores Table -->
+      <!-- Scores Table with Indented Subtests -->
       <table class="table table-bordered table-striped table-hover">
         <thead class="thead-dark">
           <tr>
             <th>Test</th>
-            <th>Scaled Score</th>
+            <th>Score (Standard/Scaled)</th>
             <th>Percentile Score</th>
+            <th>Analysis</th>
           </tr>
         </thead>
         <tbody>
+          <!-- Verbal Comprehension Index (VCI) -->
           <tr>
+            <td><strong>VCI (Verbal Comprehension Index)</strong></td>
+            <td><strong><%= report.vci_standard %></strong></td>
+            <td><strong><%= report.vci_percentile %></strong></td>
+            <td><strong><%= report.vci_analysis || 'No analysis available' %></strong></td>
+          </tr>
+          <tr style="padding-left: 20px;">
             <td>Similarities</td>
             <td><%= report.similarities_scaled_score %></td>
             <td><%= report.similarities_percentile_score %></td>
+            <td><%= report.similarities_analysis || 'No analysis available' %></td>
           </tr>
-          <tr>
+          <tr style="padding-left: 20px;">
             <td>Vocabulary</td>
             <td><%= report.vocabulary_scaled_score %></td>
             <td><%= report.vocabulary_percentile_score %></td>
+            <td><%= report.vocabulary_analysis || 'No analysis available' %></td>
           </tr>
+
+          <!-- Visual Spatial Index (VSI) -->
           <tr>
+            <td><strong>VSI (Visual Spatial Index)</strong></td>
+            <td><strong><%= report.vsi_standard %></strong></td>
+            <td><strong><%= report.vsi_percentile %></strong></td>
+            <td><strong><%= report.vsi_analysis || 'No analysis available' %></strong></td>
+          </tr>
+          <tr style="padding-left: 20px;">
             <td>Block Design</td>
             <td><%= report.block_design_scaled_score %></td>
             <td><%= report.block_design_percentile_score %></td>
+            <td><%= report.block_design_analysis || 'No analysis available' %></td>
           </tr>
-          <tr>
+          <tr style="padding-left: 20px;">
             <td>Visual Puzzles</td>
             <td><%= report.visual_puzzles_scaled_score %></td>
             <td><%= report.visual_puzzles_percentile_score %></td>
+            <td><%= report.visual_puzzles_analysis || 'No analysis available' %></td>
           </tr>
+
+          <!-- Fluid Reasoning Index (FRI) -->
           <tr>
+            <td><strong>FRI (Fluid Reasoning Index)</strong></td>
+            <td><strong><%= report.fri_standard %></strong></td>
+            <td><strong><%= report.fri_percentile %></strong></td>
+            <td><strong><%= report.fri_analysis || 'No analysis available' %></strong></td>
+          </tr>
+          <tr style="padding-left: 20px;">
             <td>Matrix Reasoning</td>
             <td><%= report.matrix_reasoning_scaled_score %></td>
             <td><%= report.matrix_reasoning_percentile_score %></td>
+            <td><%= report.matrix_reasoning_analysis || 'No analysis available' %></td>
           </tr>
-          <tr>
+          <tr style="padding-left: 20px;">
             <td>Figure Weights</td>
             <td><%= report.figure_weights_scaled_score %></td>
             <td><%= report.figure_weights_percentile_score %></td>
+            <td><%= report.figure_weights_analysis || 'No analysis available' %></td>
           </tr>
+
+          <!-- Working Memory Index (WMI) -->
           <tr>
+            <td><strong>WMI (Working Memory Index)</strong></td>
+            <td><strong><%= report.wmi_standard %></strong></td>
+            <td><strong><%= report.wmi_percentile %></strong></td>
+            <td><strong><%= report.wmi_analysis || 'No analysis available' %></strong></td>
+          </tr>
+          <tr style="padding-left: 20px;">
             <td>Digit Span</td>
             <td><%= report.digit_span_scaled_score %></td>
             <td><%= report.digit_span_percentile_score %></td>
+            <td><%= report.digit_span_analysis || 'No analysis available' %></td>
           </tr>
-          <tr>
+          <tr style="padding-left: 20px;">
             <td>Picture Span</td>
             <td><%= report.picture_span_scaled_score %></td>
             <td><%= report.picture_span_percentile_score %></td>
+            <td><%= report.picture_span_analysis || 'No analysis available' %></td>
           </tr>
+
+          <!-- Processing Speed Index (PSI) -->
           <tr>
+            <td><strong>PSI (Processing Speed Index)</strong></td>
+            <td><strong><%= report.psi_standard %></strong></td>
+            <td><strong><%= report.psi_percentile %></strong></td>
+            <td><strong><%= report.psi_analysis || 'No analysis available' %></strong></td>
+          </tr>
+          <tr style="padding-left: 20px;">
             <td>Coding</td>
             <td><%= report.coding_scaled_score %></td>
             <td><%= report.coding_percentile_score %></td>
+            <td><%= report.coding_analysis || 'No analysis available' %></td>
           </tr>
-          <tr>
+          <tr style="padding-left: 20px;">
             <td>Symbol Search</td>
             <td><%= report.symbol_search_scaled_score %></td>
             <td><%= report.symbol_search_percentile_score %></td>
+            <td><%= report.symbol_search_analysis || 'No analysis available' %></td>
           </tr>
+
+          <!-- Full Scale IQ (FSIQ) -->
+          <tr>
+            <td><strong>FSIQ (Full Scale IQ)</strong></td>
+            <td><strong><%= report.fsiq_standard %></strong></td>
+            <td><strong><%= report.fsiq_percentile %></strong></td>
+            <td><strong><%= report.fsiq_analysis || 'No analysis available' %></strong></td>
+          </tr>
+
         </tbody>
       </table>
-
-      <!-- VCI Section -->
-      <div class="mb-3">
-        <h5>VCI (Verbal Comprehension Index)</h5>
-        <p><strong>Standard Score:</strong> <%= report.vci_standard %></p>
-        <p><strong>Percentile Score:</strong> <%= report.vci_percentile %></p>
-        <p><strong>Analysis:</strong> <%= report.vci_analysis || 'No analysis available' %></p>
-      </div>
-
-      <!-- VSI Section -->
-      <div class="mb-3">
-        <h5>VSI (Visual Spatial Index)</h5>
-        <p><strong>Standard Score:</strong> <%= report.vsi_standard %></p>
-        <p><strong>Percentile Score:</strong> <%= report.vsi_percentile %></p>
-        <p><strong>Analysis:</strong> <%= report.vsi_analysis || 'No analysis available' %></p>
-      </div>
-
-      <!-- FRI Section -->
-      <div class="mb-3">
-        <h5>FRI (Fluid Reasoning Index)</h5>
-        <p><strong>Standard Score:</strong> <%= report.fri_standard %></p>
-        <p><strong>Percentile Score:</strong> <%= report.fri_percentile %></p>
-        <p><strong>Analysis:</strong> <%= report.fri_analysis || 'No analysis available' %></p>
-      </div>
-
-      <!-- WMI Section -->
-      <div class="mb-3">
-        <h5>WMI (Working Memory Index)</h5>
-        <p><strong>Standard Score:</strong> <%= report.wmi_standard %></p>
-        <p><strong>Percentile Score:</strong> <%= report.wmi_percentile %></p>
-        <p><strong>Analysis:</strong> <%= report.wmi_analysis || 'No analysis available' %></p>
-      </div>
-
-      <!-- PSI Section -->
-      <div class="mb-3">
-        <h5>PSI (Processing Speed Index)</h5>
-        <p><strong>Standard Score:</strong> <%= report.psi_standard %></p>
-        <p><strong>Percentile Score:</strong> <%= report.psi_percentile %></p>
-        <p><strong>Analysis:</strong> <%= report.psi_analysis || 'No analysis available' %></p>
-      </div>
-
-      <!-- FSIQ Section -->
-      <div class="mb-3">
-        <h5>FSIQ (Full Scale IQ)</h5>
-        <p><strong>Standard Score:</strong> <%= report.fsiq_standard %></p>
-        <p><strong>Percentile Score:</strong> <%= report.fsiq_percentile %></p>
-        <p><strong>Analysis:</strong> <%= report.fsiq_analysis || 'No analysis available' %></p>
-      </div>
-
-      <!-- Individual Test Analysis -->
-      <div class="mb-3">
-        <h5>Test Analysis</h5>
-        <p><strong>Similarities:</strong> <%= report.similarities_analysis || 'No analysis available' %></p>
-        <p><strong>Vocabulary:</strong> <%= report.vocabulary_analysis || 'No analysis available' %></p>
-        <p><strong>Block Design:</strong> <%= report.block_design_analysis || 'No analysis available' %></p>
-        <p><strong>Visual Puzzles:</strong> <%= report.visual_puzzles_analysis || 'No analysis available' %></p>
-        <p><strong>Matrix Reasoning:</strong> <%= report.matrix_reasoning_analysis || 'No analysis available' %></p>
-        <p><strong>Figure Weights:</strong> <%= report.figure_weights_analysis || 'No analysis available' %></p>
-        <p><strong>Digit Span:</strong> <%= report.digit_span_analysis || 'No analysis available' %></p>
-        <p><strong>Picture Span:</strong> <%= report.picture_span_analysis || 'No analysis available' %></p>
-        <p><strong>Symbol Search:</strong> <%= report.symbol_search_analysis || 'No analysis available' %></p>
-        <p><strong>Coding:</strong> <%= report.coding_analysis || 'No analysis available' %></p>
-      </div>
 
       <!-- Overall Analysis Section -->
       <div class="mb-3">
