@@ -1,0 +1,10 @@
+console.log("generate_pdf.js.erb executed!");
+var pdfLink = "<%= @pdf_link %>";
+console.log("PDF link: " + pdfLink);
+
+var linkContainer = document.getElementById('pdf-link-container');
+if (linkContainer) {
+    linkContainer.innerHTML = '<a href="' + pdfLink + '" target="_blank">Click here to view your report PDF</a>';
+} else {
+    console.error("PDF link container not found!");
+}

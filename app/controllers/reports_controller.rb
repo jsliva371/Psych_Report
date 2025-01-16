@@ -2,6 +2,7 @@ class ReportsController < ApplicationController
   before_action :authenticate_user!  # Ensure the user is signed in
   before_action :set_user  # Fetch the user for the nested route
   before_action :set_report, only: [:show, :edit, :update, :destroy]  # Fetch report for specific actions
+  protect_from_forgery except: :generate_pdf
 
   # GET /users/:user_id/reports
   def index
@@ -205,6 +206,29 @@ class ReportsController < ApplicationController
       render json: { error: "No PDF file uploaded." }, status: :unprocessable_entity
     end
   end  
+
+  # Generate PDF from the SAVED report
+  def generate_pdf
+    @report = Report.find(params[:id])
+  
+    # Generate the PDF
+    pdf_generator = ReportGenerator.new(@report)
+    pdf_data = pdf_generator.generate_pdf
+  
+    # Save the PDF to a file
+    pdf_path = Rails.root.join('public', 'pdfs', "report_#{@report.id}.pdf")
+    File.open(pdf_path, 'wb') { |file| file.write(pdf_data) }
+  
+    # Set the @pdf_link for use in JavaScript
+    @pdf_link = "/pdfs/report_#{@report.id}.pdf"
+  
+    # Respond with JavaScript
+    respond_to do |format|
+      format.js { render content_type: 'application/javascript' }
+    end
+  end
+  
+
   
   private
 

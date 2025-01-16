@@ -12,6 +12,11 @@ Rails.application.routes.draw do
         # Route to extract scores from uploaded PDF
         post 'extract_scores', to: 'reports#extract_scores'
       end
+
+      # Route to generate PDF for the individual report
+      member do
+        get :generate_pdf, defaults: { format: :js }
+      end
     end
   end
 
@@ -21,3 +26,4 @@ Rails.application.routes.draw do
   # Root path
   root "home#index"
 end
+

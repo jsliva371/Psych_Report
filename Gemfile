@@ -39,6 +39,12 @@ gem 'sassc-rails'
 gem 'docx'
 
 gem 'pdf-reader'
+
+gem 'combine_pdf'
+
+gem 'prawn'
+
+gem 'prawn-table'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

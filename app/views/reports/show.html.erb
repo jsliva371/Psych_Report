@@ -3,9 +3,42 @@
 <%= render @report %>
 
 <div>
-  <%= link_to "Edit this report", edit_user_report_path(current_user, @report) %> |
-  <%= link_to "Back to reports", user_reports_path(current_user) %>
+  <%= link_to "Edit this report", edit_user_report_path(current_user, @report), class: "btn btn-secondary" %>
+  <%= link_to "Back to reports", user_reports_path(current_user), class: "btn btn-secondary" %>
+  
+  <!-- Generate PDF Button -->
+  <%= button_to 'Generate PDF', 
+                generate_pdf_user_report_path(@user, @report),
+                method: :get, remote: true, id: "generate-pdf-btn", 
+                authenticity_token: true, 
+                class: "btn btn-primary" %>
+  
+  <!-- View PDF Button -->
+  <span id="pdf-link-container" style="margin-left: 10px;",class: "btn btn-primary" %></span>
 
-  <%= button_to "Destroy this report", user_report_path(current_user, @report), method: :delete, data: { confirm: "Are you sure?" } %>
-
+  <!-- Destroy Report Button -->
+  <%= button_to "Destroy this report", 
+                user_report_path(current_user, @report), 
+                method: :delete, 
+                data: { confirm: "Are you sure?" }, 
+                class: "btn btn-danger" %>
 </div>
+
+<script>
+  document.getElementById('generate-pdf-btn').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    fetch('<%= generate_pdf_user_report_path(@user, @report) %>', {
+      method: 'GET',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Accept': 'application/javascript'
+      }
+    })
+    .then(response => response.text())
+    .then(jsCode => {
+      eval(jsCode); // Execute the received JavaScript
+    })
+    .catch(error => console.error('Error:', error));
+  });
+</script>
